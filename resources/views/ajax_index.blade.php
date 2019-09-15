@@ -14,9 +14,9 @@
 <body>
     <div class="container">
         <br />
-        <h3 text-align="center">Simple Ajax Crud </h3>
+        <h3 align="center">Simple Ajax Crud </h3>
         <br />
-        <div text-align="right">
+        <div align="right">
             <button type="button" name="create_record" id="create_record" class="btn btn-success btn-sm">Create
                 Record</button>
         </div>
@@ -63,13 +63,13 @@
                             <input type="text" name="last_name" id="last_name" class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label class="control-label col-md-4">Select Profile Image : </label>
                         <div class="col-md-8">
                             <input type="file" name="image" id="image" />
                             <span id="store_image"></span>
                         </div>
-                    </div>
+                    </div> --}}
                     <br />
                     <div class="form-group" align="center">
                         <input type="hidden" name="action" id="action" />
@@ -135,11 +135,15 @@
  });
 
  $('#create_record').click(function(){
-  $('.modal-title').text("Add New Record");
-     $('#action_button').val("Add");
-     $('#action').val("Add");
-     $('#formModal').modal('show');
+    $('.modal-title').text("Add New Record");
+    $(".alert-success").remove( "div" );
+    $('#action_button').val("Add");
+    $('#action').val("Add");
+    $('#formModal').modal('show');
  });
+
+
+
 
 
 $('#sample_form').on('submit',function(event){
@@ -169,12 +173,14 @@ $('#sample_form').on('submit',function(event){
                 }
                 $('#form_result').html(html);
             }
+            
         });
     }
 
     if($('#action').val() == 'Edit') {
+
     $.ajax({
-        url : "{{route('ajax-crud.update')}}",
+        url:"{{ route('ajax-crud.update') }}",
         method : "post",
         data : new FormData(this),
         contentType : false,
@@ -208,9 +214,10 @@ $('#sample_form').on('submit',function(event){
 
 $(document).on('click','.edit',function(){
     var id = $(this).attr('id');
+    $(".alert-success").remove( "div" );
     $('#form_result').html();
     $.ajax({
-        url : "/ajax-crud/"+id+"/edit",
+        url:"/ajax-crud/"+id+"/edit",
         dataType : "json",
         success : function(html) {
             $('#first_name').val(html.data.first_name);
@@ -223,14 +230,16 @@ $(document).on('click','.edit',function(){
             $('#action').val("Edit");
             $('#formModal').modal('show');
         }
-    });
+    })
 });
+
 
 var user_id;
 
 $(document).on('click', '.delete', function(){
     user_id = $(this).attr('id');
     $('#confirmModal').modal('show');
+    $('#ok_button').text('Delete');
     });
 
     $('#ok_button').click(function(){
